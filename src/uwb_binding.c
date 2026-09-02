@@ -128,7 +128,7 @@ static mcl_uwb_status_t mcl_uwb_translate_link_status(mcl_link_status_t st)
     case MCL_LINK_ERR_INVALID_ARGUMENT:
         return MCL_UWB_ERR_INVALID_ARGUMENT;
     default:
-        /* Unknown class, reserved bits set, oversize payload, failed integrity. */
+        /* Unknown class, reserved bits set, oversize payload, failed frame check. */
         return MCL_UWB_ERR_NONCANONICAL;
     }
 }
