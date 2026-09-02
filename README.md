@@ -38,3 +38,27 @@ freestanding target.
 ## Status
 
 Private research repository. Pre-v0.1. See [`spec/binding-v0.md`](spec/binding-v0.md).
+
+### Evidence
+
+**None.** This binding is unit-tested C99 that has never met UWB hardware. It is
+a carriage mapping and an evidence model, not a demonstrated transport.
+
+### Why this binding exposes no distance
+
+UWB is the easiest place in MCL to overclaim, so the API deliberately offers
+**no verified-distance field and no proximity-proved flag**.
+
+A ranging measurement is admissible as proximity evidence only when ranging was
+actually performed, by a method that cancels clock drift, with authenticated
+timestamps, at moderate confidence. There is no relaxed mode. Distance
+conversion refuses to overflow rather than wrapping into a small and entirely
+plausible distance, which is the worst available failure.
+
+An NLOS measurement stays admissible on purpose: a reflected path is longer than
+the direct one, so it can only overstate distance.
+
+None of this defeats a relay. A wormhole forwards valid traffic between two
+locations in real time, and no cryptography detects it. Ranging is evidence for
+local policy to weigh, never proof of co-presence. See
+[`SECURITY.md`](https://github.com/machine-contact-layer/mcl-core/blob/main/SECURITY.md).
