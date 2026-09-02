@@ -112,6 +112,27 @@ uint8_t mcl_uwb_fits_payload(size_t frame_size)
     return (frame_size != 0u && frame_size <= (size_t)MCL_UWB_MAX_PAYLOAD) ? 1u : 0u;
 }
 
+/*
+ * Translate a Link decode failure into this binding's vocabulary. See the
+ * matching note in mcl-ip: truncation is the one failure that more bytes could
+ * repair, and an incompatible major version is a statement about the peer
+ * rather than about the bytes.
+ */
+static mcl_uwb_status_t mcl_uwb_translate_link_status(mcl_link_status_t st)
+{
+    switch (st) {
+    case MCL_LINK_ERR_TRUNCATED:
+        return MCL_UWB_ERR_TRUNCATED;
+    case MCL_LINK_ERR_INCOMPATIBLE_VERSION:
+        return MCL_UWB_ERR_UNSUPPORTED;
+    case MCL_LINK_ERR_INVALID_ARGUMENT:
+        return MCL_UWB_ERR_INVALID_ARGUMENT;
+    default:
+        /* Unknown class, reserved bits set, oversize payload, failed integrity. */
+        return MCL_UWB_ERR_NONCANONICAL;
+    }
+}
+
 mcl_uwb_status_t mcl_uwb_payload_validate(
     const uint8_t *payload,
     size_t payload_size)
@@ -129,7 +150,7 @@ mcl_uwb_status_t mcl_uwb_payload_validate(
 
     st = mcl_link_frame_decode(payload, payload_size, &frame, &consumed);
     if (st != MCL_LINK_OK) {
-        return (st == MCL_LINK_ERR_RANGE) ? MCL_UWB_ERR_TRUNCATED : MCL_UWB_ERR_RANGE;
+        return mcl_uwb_translate_link_status(st);
     }
     if (consumed != payload_size) {
         /* One frame per UWB data frame. Trailing bytes are not ours. */

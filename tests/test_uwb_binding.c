@@ -143,8 +143,18 @@ static void test_payload_boundary(void)
     CHECK(mcl_uwb_payload_validate(padded, frame_size + 1u) == MCL_UWB_ERR_NONCANONICAL,
           "trailing byte rejected");
 
-    CHECK(mcl_uwb_payload_validate(frame, frame_size - 1u) != MCL_UWB_OK,
-          "truncated payload rejected");
+    CHECK(mcl_uwb_payload_validate(frame, frame_size - 1u) == MCL_UWB_ERR_TRUNCATED,
+          "truncated payload reports truncation");
+
+    memcpy(padded, frame, frame_size);
+    padded[0] = (uint8_t)((padded[0] & 0xF0u) | 0x0Fu);
+    CHECK(mcl_uwb_payload_validate(padded, frame_size) == MCL_UWB_ERR_NONCANONICAL,
+          "unknown frame class is non-canonical, not truncated");
+
+    memcpy(padded, frame, frame_size);
+    padded[0] = (uint8_t)((1u << 4u) | (padded[0] & 0x0Fu));
+    CHECK(mcl_uwb_payload_validate(padded, frame_size) == MCL_UWB_ERR_UNSUPPORTED,
+          "a future Link major version is reported as unsupported");
     CHECK(mcl_uwb_payload_validate(NULL, frame_size) == MCL_UWB_ERR_INVALID_ARGUMENT,
           "null payload rejected");
 
