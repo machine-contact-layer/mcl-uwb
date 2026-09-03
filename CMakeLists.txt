@@ -15,7 +15,8 @@ endif()
 # integrator's decision, and a binding must not become a network stack.
 add_library(mcl_uwb STATIC
     src/uwb_binding.c
-    "${MCL_LINK_DIR}/src/link.c")
+    "${MCL_LINK_DIR}/src/link.c"
+    "${MCL_LINK_DIR}/src/rendezvous.c")
 target_include_directories(mcl_uwb PUBLIC
     ${CMAKE_CURRENT_SOURCE_DIR}/include
     "${MCL_LINK_DIR}/include")

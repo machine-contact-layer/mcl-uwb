@@ -1,0 +1,29 @@
+{
+  "registry_version": "0.1-draft",
+  "status": "provisional",
+  "transport_id": 4,
+  "transport_name": "MCL_UWB",
+  "transport_registry": "mcl-link/registries/transport-ids-v0.1.json",
+  "purpose": "Assigned values for the 8-bit profile_id field for the UWB binding.",
+  "allocation_policy": {
+    "0x00": "Reserved. Never assigned, so an uninitialised field names no profile.",
+    "0x01_0x3F": "MCL Standards Action",
+    "0x40_0xBF": "Specification Required",
+    "0xC0_0xEF": "Experimental Use",
+    "0xF0_0xFE": "Private Use",
+    "0xFF": "Reserved"
+  },
+  "profiles": [
+    {
+      "id": 0,
+      "name": "RESERVED",
+      "status": "reserved",
+      "detail": "Permanently reserved. An offer carrying profile_id 0 is malformed."
+    }
+  ],
+  "not_assigned": "No profile is assigned for UWB. The binding is unit-tested C99 that has never met UWB hardware, so there is no behaviour for a profile to describe and nothing an implementer could conform to. Assigning a value now would advertise interoperable support that does not exist. This registry exists to say that explicitly rather than leave the question open.",
+  "notes": [
+    "Ranging measurements carried by this binding are proximity EVIDENCE and never proof of co-presence. A relay forwards a real exchange unmodified and defeats a proximity claim without breaking any cryptography. See mcl-uwb.",
+    "An implementation receiving an unassigned profile_id MUST NOT guess. It refuses the offer and may continue on its current transport."
+  ]
+}
