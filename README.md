@@ -37,7 +37,7 @@ freestanding target.
 
 ## Status
 
-Private research repository. Pre-v0.1. See [`spec/binding-v0.md`](spec/binding-v0.md).
+Public research binding. See [`spec/binding-v0.md`](spec/binding-v0.md).
 
 ### Evidence
 
