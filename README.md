@@ -1,6 +1,42 @@
-# MCL-UWB
+<p align="center">
+  <img src="https://raw.githubusercontent.com/machine-contact-layer/.github/main/profile/banner.png" alt="OJOBIT" width="100%">
+</p>
 
-`mcl-uwb` defines an optional Ultra-Wideband binding for the Machine Contact Layer.
+<h1 align="center">MCL-UWB</h1>
+
+<p align="center"><strong>The Ultra-Wideband binding — specified, reviewable, and honestly not yet measured.</strong></p>
+
+<p align="center">
+  <a href="https://github.com/machine-contact-layer/mcl-uwb/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/machine-contact-layer/mcl-uwb/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/machine-contact-layer/mcl-uwb/blob/main/LICENSE"><img alt="License Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-blue"></a>
+  <img alt="status" src="https://img.shields.io/badge/status-experimental-lightgrey">
+  <img alt="evidence" src="https://img.shields.io/badge/evidence-none%20yet-red">
+</p>
+
+<p align="center">
+  <a href="https://github.com/machine-contact-layer/mcl-sdk"><b>Use the SDK instead</b></a> ·
+  <a href="https://github.com/machine-contact-layer/mcl-core"><b>Specifications</b></a> ·
+  <a href="https://github.com/machine-contact-layer/mcl-link"><b>mcl-link</b></a>
+</p>
+
+---
+
+> ### Read this before you build on it
+>
+> This binding is **specified but never run on hardware**. There is no physical
+> qualification for UWB in this release, and no hardware evidence behind it.
+> It is published so it can be reviewed and implemented, not because it is
+> proven. For something measured today, use
+> [mcl-ip](https://github.com/machine-contact-layer/mcl-ip) or [mcl-ble](https://github.com/machine-contact-layer/mcl-ble).
+
+## Why this exists
+
+UWB gives something the other bindings cannot: distance that is hard to fake.
+That makes it interesting for contact between machines that need to know a peer
+is physically near, rather than merely reachable.
+
+The binding is written so that work can start — and so that anyone with the
+radios can tell us where the specification is wrong.
 
 UWB is especially relevant when precise ranging or spatially constrained communication is available, but it remains a transport binding rather than the definition of MCL.
 
