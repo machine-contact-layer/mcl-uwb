@@ -9,7 +9,7 @@
 <p align="center">
   <a href="https://github.com/machine-contact-layer/mcl-uwb/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/machine-contact-layer/mcl-uwb/actions/workflows/ci.yml/badge.svg"></a>
   <a href="https://github.com/machine-contact-layer/mcl-uwb/blob/main/LICENSE"><img alt="License Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-blue"></a>
-  <img alt="status" src="https://img.shields.io/badge/status-specification%20only-lightgrey">
+  <img alt="status" src="https://img.shields.io/badge/status-experimental-lightgrey">
   <img alt="evidence" src="https://img.shields.io/badge/evidence-none%20yet-red">
 </p>
 
@@ -24,7 +24,7 @@
 > ### Read this before you build on it
 >
 > This binding is **specified but never run on hardware**. There is no physical
-> qualification for UWB in this release, and no conformance evidence behind it.
+> qualification for UWB in this release, and no hardware evidence behind it.
 > It is published so it can be reviewed and implemented, not because it is
 > proven. For something measured today, use
 > [mcl-ip](https://github.com/machine-contact-layer/mcl-ip) or [mcl-ble](https://github.com/machine-contact-layer/mcl-ble).
