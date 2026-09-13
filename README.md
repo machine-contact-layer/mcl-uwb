@@ -1,100 +1,104 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/machine-contact-layer/.github/main/profile/banner.png" alt="OJOBIT" width="100%">
+  <img src="https://raw.githubusercontent.com/machine-contact-layer/.github/main/profile/banner.png" alt="Machine Contact Layer (MCL) banner: black and white checkerboard with the OJOBIT wordmark" width="100%">
 </p>
 
 <h1 align="center">MCL-UWB</h1>
 
-<p align="center"><strong>The Ultra-Wideband binding — specified, reviewable, and honestly not yet measured.</strong></p>
+<p align="center"><strong>The Ultra-Wideband binding: specified and unit-tested, not yet run on UWB hardware.</strong></p>
 
 <p align="center">
-  <a href="https://github.com/machine-contact-layer/mcl-uwb/actions/workflows/ci.yml"><img alt="CI" src="https://github.com/machine-contact-layer/mcl-uwb/actions/workflows/ci.yml/badge.svg"></a>
-  <a href="https://github.com/machine-contact-layer/mcl-uwb/blob/main/LICENSE"><img alt="License Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-blue"></a>
-  <img alt="status" src="https://img.shields.io/badge/status-experimental-lightgrey">
-  <img alt="evidence" src="https://img.shields.io/badge/evidence-none%20yet-red">
+  Experimental Ultra-Wideband (UWB) transport binding for the Machine Contact
+  Layer (MCL): a specification and freestanding C99 reference for carrying
+  machine-to-machine contact frames and ranging metadata over UWB radios.
 </p>
 
 <p align="center">
-  <a href="https://github.com/machine-contact-layer/mcl-sdk"><b>Use the SDK instead</b></a> ·
-  <a href="https://github.com/machine-contact-layer/mcl-core"><b>Specifications</b></a> ·
-  <a href="https://github.com/machine-contact-layer/mcl-link"><b>mcl-link</b></a>
+  <a href="https://github.com/machine-contact-layer/mcl-uwb/actions/workflows/ci.yml"><img alt="CI status" src="https://github.com/machine-contact-layer/mcl-uwb/actions/workflows/ci.yml/badge.svg"></a>
+  <a href="https://github.com/machine-contact-layer/mcl-uwb/blob/main/LICENSE"><img alt="License: Apache-2.0" src="https://img.shields.io/badge/license-Apache--2.0-blue"></a>
+  <img alt="Maturity: Research Draft" src="https://img.shields.io/badge/maturity-Research%20Draft-lightgrey">
+  <img alt="Language: freestanding C99" src="https://img.shields.io/badge/C99-freestanding-informational">
+</p>
+
+<p align="center">
+  <a href="https://github.com/machine-contact-layer/mcl-sdk"><b>SDK</b></a> ·
+  <a href="https://github.com/machine-contact-layer/mcl-core"><b>MCL overview</b></a> ·
+  <a href="spec/binding-v0.md"><b>Specification</b></a> ·
+  <a href="https://github.com/machine-contact-layer/mcl-core/blob/main/REPORTING.md"><b>Report a defect</b></a>
 </p>
 
 ---
 
-> ### Read this before you build on it
->
-> This binding is **specified but never run on hardware**. There is no physical
-> qualification for UWB in this release, and no hardware evidence behind it.
-> It is published so it can be reviewed and implemented, not because it is
-> proven. For something measured today, use
-> [mcl-ip](https://github.com/machine-contact-layer/mcl-ip) or [mcl-ble](https://github.com/machine-contact-layer/mcl-ble).
+UWB offers something the other bindings cannot: distance measurements that are
+hard to fake. That makes it interesting for contact between machines that need
+to know a peer is physically near, rather than merely reachable.
 
-## Why this exists
+It is part of the [Machine Contact Layer](https://github.com/machine-contact-layer/mcl-core),
+an open protocol for machine-to-machine discovery, contact and transport
+migration.
 
-UWB gives something the other bindings cannot: distance that is hard to fake.
-That makes it interesting for contact between machines that need to know a peer
-is physically near, rather than merely reachable.
+> **Research Draft.** This binding has not been run on UWB hardware and nothing
+> in it is frozen. For a transport you can build on today, use
+> [mcl-ip](https://github.com/machine-contact-layer/mcl-ip) or
+> [mcl-ble](https://github.com/machine-contact-layer/mcl-ble). If you have UWB
+> radios and find where the specification is wrong,
+> [report it](https://github.com/machine-contact-layer/mcl-core/blob/main/REPORTING.md).
 
-The binding is written so that work can start — and so that anyone with the
-radios can tell us where the specification is wrong.
+## What MCL-UWB provides
 
-UWB is especially relevant when precise ranging or spatially constrained communication is available, but it remains a transport binding rather than the definition of MCL.
+- **Carriage of MCL Link frames** over UWB-capable systems
+- **Ranging measurements as transport metadata**, with explicit admissibility
+  rules for when a measurement may count as proximity evidence
+- **Session preservation across a handoff**, like every MCL binding
+- **A freestanding C99 reference** with no allocation, no global mutable state
+  and no UWB driver: you connect it to the radio stack you already have
 
-## Scope
+It does not define UWB radio hardware, ranging algorithms, regulatory limits or
+MCL semantics.
 
-- MCL Link frame carriage over UWB-capable systems
-- capability negotiation
-- integration of ranging/spatial measurements as transport metadata
-- session/context preservation across handoff
-- conformance vectors
+## Use it
 
-## Non-goals
+- [`spec/binding-v0.md`](spec/binding-v0.md) — the binding specification
+- [`include/mcl/uwb_binding.h`](include/mcl/uwb_binding.h) — public API
+- [`src/uwb_binding.c`](src/uwb_binding.c) — implementation
+- [`tests/test_uwb_binding.c`](tests/test_uwb_binding.c) — round trips and refusal cases
 
-MCL-UWB does not define UWB radio hardware, ranging algorithms, regulatory limits, or MCL semantic meaning.
+The library builds under `/W4 /WX`, and the compiled object references no libc
+symbol, so it links on a freestanding target.
 
+## Maturity
 
-## Implementation status
+| | Status |
+|---|---|
+| [`spec/binding-v0.md`](spec/binding-v0.md) | **Research Draft.** Nothing here is frozen. |
+| Transport identifier `4` (`MCL_UWB`) | Assigned for use, not frozen |
+| Hardware runs | None yet |
 
-The reference implementation is present, freestanding C99, with no allocation
-and no global mutable state. It contains **no UWB driver**: how bytes reach the
-medium is the integrator's decision. A binding describes a mapping; it does not
-become a UWB driver.
+## Why this binding exposes no distance field
 
-Verified: builds under `/W4 /WX`, and the compiled object references no libc
-symbol (no `memcpy`, `memset`, `malloc`, or stdio), so it links on a
-freestanding target.
-
-- `include/mcl/uwb_binding.h` — public API
-- `src/uwb_binding.c` — implementation
-- `tests/test_uwb_binding.c` — round trips and the negative cases
-
-**Status: Research Draft.** Nothing here is frozen. Assigned transport id
-`0x04` is provisional until Candidate Specification maturity.
-
-## Status
-
-Public research binding. See [`spec/binding-v0.md`](spec/binding-v0.md).
-
-### Evidence
-
-**None.** This binding is unit-tested C99 that has never met UWB hardware. It is
-a carriage mapping and an evidence model, not a demonstrated transport.
-
-### Why this binding exposes no distance
-
-UWB is the easiest place in MCL to overclaim, so the API deliberately offers
-**no verified-distance field and no proximity-proved flag**.
+The API deliberately offers **no verified-distance field and no
+proximity-proved flag**, because those are the easiest things to get wrong.
 
 A ranging measurement is admissible as proximity evidence only when ranging was
 actually performed, by a method that cancels clock drift, with authenticated
 timestamps, at moderate confidence. There is no relaxed mode. Distance
-conversion refuses to overflow rather than wrapping into a small and entirely
-plausible distance, which is the worst available failure.
+conversion refuses to overflow rather than wrapping into a small and plausible
+distance.
 
-An NLOS measurement stays admissible on purpose: a reflected path is longer than
-the direct one, so it can only overstate distance.
+A non-line-of-sight measurement stays admissible on purpose: a reflected path is
+longer than the direct one, so it can only overstate distance.
 
-None of this defeats a relay. A wormhole forwards valid traffic between two
-locations in real time, and no cryptography detects it. Ranging is evidence for
-local policy to weigh, never proof of co-presence. See
-[`SECURITY.md`](https://github.com/machine-contact-layer/mcl-core/blob/main/SECURITY.md).
+None of this defeats a relay, which forwards valid traffic between two locations
+in real time. Ranging is evidence for local policy to weigh, never proof of
+co-presence. See [`SECURITY.md`](https://github.com/machine-contact-layer/mcl-core/blob/main/SECURITY.md).
+
+## Related repositories
+
+[mcl-core](https://github.com/machine-contact-layer/mcl-core) ·
+[mcl-link](https://github.com/machine-contact-layer/mcl-link) ·
+[mcl-sdk](https://github.com/machine-contact-layer/mcl-sdk) ·
+[mcl-ble](https://github.com/machine-contact-layer/mcl-ble) ·
+[mcl-ip](https://github.com/machine-contact-layer/mcl-ip)
+
+## License
+
+Apache-2.0. See [`LICENSE`](LICENSE).
